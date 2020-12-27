@@ -1,14 +1,17 @@
 #include <iostream>
 #include <string>
-//////////////////////////////////////////////////
-//                 The System  Ver: 0.0.1 Alpha //
-//////////////////////////////////////////////////
-//                Gaia Awakening                //
-//////////////////////////////////////////////////
-//  Author: John Dovey (c) 2020 GPL             //
-//  Email: dovey.john@gmail.com                 //
-//  https://johndovey.github.io/TheSystem/      //
-//////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+//                 The System  Ver: 0.0.1 Alpha             //
+//////////////////////////////////////////////////////////////
+// Gaia Awakening :                                         //
+// https://www.royalroad.com/fiction/28874/gaia-awakening   //
+//////////////////////////////////////////////////////////////
+//  Author: John Dovey (c) 2020                             //
+//  Licence: GNU Affero General Public License v3.0         //
+// https://github.com/JohnDovey/TheSystem/blob/main/LICENSE //
+//  Email: dovey.john@gmail.com                             //
+//  https://johndovey.github.io/TheSystem/                  //
+//////////////////////////////////////////////////////////////
 
 using namespace std;
 
