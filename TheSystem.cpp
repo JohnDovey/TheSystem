@@ -5,7 +5,7 @@
 //////////////////////////////////////////////////
 //                Gaia Awakening                //
 //////////////////////////////////////////////////
-//  Author: John Dovey                          //
+//  Author: John Dovey (c) 2020 GPL             //
 //  Email: dovey.john@gmail.com                 //
 //  https://johndovey.github.io/TheSystem/      //
 //////////////////////////////////////////////////
