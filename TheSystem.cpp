@@ -60,12 +60,13 @@ void MsgLine(string MyMsgLine)
 }
 void MsgBox(string MyMsg)
 {
+    // ToDo: Make multiline message capable
     int count = MyMsg.length(); // Length of string to print
     TopLine(count);
     MsgLine(MyMsg);
     // Bottom Line
     BottomLine(count);
-    //ShadowLine(count);
+    // ShadowLine(count);
     return;
 }
 void BuildMenu(string MenuText)
@@ -80,7 +81,7 @@ void BuildMenu(string MenuText)
     TopLine(MenuWidth);
     MsgLine(MenuText);
     BottomLine(MenuWidth);
-    //ShadowLine(MenuWidth);
+    //ShadowLine(MenuWidth); // Removed the ShadowLine - Doesn't look good
     printf("\n");
     return;
 }
@@ -100,11 +101,13 @@ int main(int, char **)
     MsgBox(xMsg);
     xMsg = "Please Stand by for system integrity check ...";
     MsgBox(xMsg);
-    MenuText = "[S]tatus E[x]it";
+    MenuText = "[S]tatus [A]bout E[x]it [C]opyright";
     BuildMenu(MenuText);
     MenuChoice = getchar();
     xMsg = "User Selected: " + MenuChoice;
     MsgBox(xMsg);
+    // ToDo: Create an input look and case/if statement
+    // ToDo: Figure out whether the action letters and decision loop should be in the MenuBuilder function 
    /* switch (stol(MenuChoice))
     {
     case 1:
