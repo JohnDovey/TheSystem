@@ -1,3 +1,4 @@
+#include <ncurses.h>
 #include <iostream>
 #include <string>
 //////////////////////////////////////////////////////////////
@@ -85,6 +86,15 @@ void BuildMenu(string MenuText)
     printf("\n");
     return;
 }
+void TheSystemInit()
+{
+    string xMsg;
+    xMsg = "Please Stand by for system integrity check ...";
+    MsgBox(xMsg);
+    xMsg = "Scanning for prior System Installation ..";
+    MsgBox(xMsg);
+    return;
+}
 int main(int, char **)
 {
     // Constants
@@ -99,16 +109,16 @@ int main(int, char **)
 
     xMsg = "Welcome to The System [Version:" + AppVersion + AlphaCode + "]";
     MsgBox(xMsg);
-    xMsg = "Please Stand by for system integrity check ...";
-    MsgBox(xMsg);
+    TheSystemInit();
+
     MenuText = "[S]tatus [A]bout E[x]it [C]opyright";
     BuildMenu(MenuText);
     MenuChoice = getchar();
     xMsg = "User Selected: " + MenuChoice;
     MsgBox(xMsg);
-    // ToDo: Create an input look and case/if statement
-    // ToDo: Figure out whether the action letters and decision loop should be in the MenuBuilder function 
-   /* switch (stol(MenuChoice))
+    // ToDo: Create an input loop and case/if statement
+    // ToDo: Figure out whether the action letters and decision loop should be in the MenuBuilder function
+    /* switch (stol(MenuChoice))
     {
     case 1:
         cout << "S";
