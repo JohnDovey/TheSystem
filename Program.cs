@@ -1,14 +1,42 @@
 using System;
+using System.IO;
 using Crayon;
 // Import Microsoft.Data.Sqlite namespaces
 using Microsoft.Data.Sqlite;
+using SQLite;
+//////////////////////////////////////////////////////////////
+//                 The System  Ver: 0.0.3 Alpha             //
+//////////////////////////////////////////////////////////////
+// Gaia Awakening :                                         //
+// https://www.royalroad.com/fiction/28874/gaia-awakening   //
+//////////////////////////////////////////////////////////////
+//  Author: John Dovey (c) 2020                             //
+//  Licence: GNU Affero General Public License v3.0         //
+// https://github.com/JohnDovey/TheSystem/blob/main/LICENSE //
+//  Email: dovey.john@gmail.com                             //
+//  https://johndovey.github.io/TheSystem/                  //
+//////////////////////////////////////////////////////////////
 
 namespace TheSystemNet
 {
+
     class Program
     {
-        public static void Main()
+        public class Menu
         {
+            [PrimaryKey, AutoIncrement]
+            public int menuid { get; set; } // NOT NULL
+            public int parentid { get; set; } // NOT NULL default(0)
+            public int sortid { get; set; } // NOT NULL default(0)
+            public string url { get; set; } // NOT NULL default('#')
+            public string name { get; set; } // NOT NULL default('Unknown')
+            public string desc { get; set; } // NOT NULL default('Unknown')
+            public int seclevel { get; set; } // NOT NULL default(0))
+
+        }
+        public static async System.Threading.Tasks.Task Main()
+        {
+
             Console.Clear();
             Console.WriteLine(" ... Startup Sequence ...");
 
@@ -22,13 +50,41 @@ namespace TheSystemNet
             Console.ResetColor();
 
             Console.WriteLine(Output.BrightBlue("Accessing Database ..."));
-
+            // Get an absolute path to the database file
+            var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TheSystem.db");
+            var db = new SQLiteAsyncConnection(databasePath);
+            
             // Setup and open database. This is created as a file in the same folder as the program if it doesn't exist
+            await db.CreateTableAsync<Menu>();
+
+            Console.WriteLine("Table created!");
+
+            var menu = new Menu()
+            {
+                parentid = 0,
+                sortid = 0,
+                url = "http://gatofuego.com",
+                name = "El Gato de Fuego",
+                desc = "El Gato de Fuego Website",
+                seclevel = 1
+            };
+
+            await db.InsertAsync(menu);
+
+            Console.WriteLine("Menu ID: {0}", menu.menuid);
+            var count = await db.ExecuteScalarAsync<int>("select count(*) from Menu");
+
+            Console.WriteLine(string.Format("Found '{0}' menu items.", count));
+
             SqliteConnection sqlite_conn;
             sqlite_conn = CreateConnection();
             CreateTable(sqlite_conn);
             InsertData(sqlite_conn);
             ReadData(sqlite_conn);
+
+            // Try to create a menu
+            BuildMenu(sqlite_conn);
+            // End Menu
 
             sqlite_conn.Close(); // Close the database connection. This cleans up all memory etc
 
@@ -61,7 +117,7 @@ namespace TheSystemNet
 
             sqlite_cmd.CommandText = "INSERT INTO menu (`menuid`, `parentid`, `sortid`, `url`, `name`, `desc`, `seclevel`) VALUES (1, 0, 0, 'index.php', 'Home', 'Return to the website''s home page', 0); ";
             sqlite_cmd.ExecuteNonQuery();
-           
+
             sqlite_cmd.CommandText = "INSERT INTO menu (`menuid`, `parentid`, `sortid`, `url`, `name`, `desc`, `seclevel`) VALUES (2, 0, 1, 'Search.php', 'Search', 'Search for what you need', 0); ";
             sqlite_cmd.ExecuteNonQuery();
 
@@ -74,6 +130,10 @@ namespace TheSystemNet
         }
         static void CreateTable(SqliteConnection conn)
         {
+           
+           
+            
+
             // Create menu table if it doesn't already exist
             SqliteCommand sqlite_cmd;
             string Createsql = "CREATE TABLE IF NOT EXISTS menu (menuid INTEGER PRIMARY KEY NOT NULL, parentid INTEGER NOT NULL default(0), sortid INTEGER NOT NULL default(0), url TEXT NOT NULL default('#'), name TEXT NOT NULL default('Unknown'), desc TEXT NOT NULL default('Unknown'), seclevel INTEGER NOT NULL default(0))";
@@ -95,10 +155,10 @@ namespace TheSystemNet
 
             // Select text from the Menu table
 
-           // while (query.Read()) // Loop through the menu data and write out text from the fields
-           // {
-           //     Console.WriteLine(query.GetString(0) + " = " + query.GetString(1) + " = " + query.GetString(2) + " = " + query.GetString(3) + " = " + query.GetString(4) + " = " + query.GetString(5));// First selected field is index 0
-            
+            // while (query.Read()) // Loop through the menu data and write out text from the fields
+            // {
+            //     Console.WriteLine(query.GetString(0) + " = " + query.GetString(1) + " = " + query.GetString(2) + " = " + query.GetString(3) + " = " + query.GetString(4) + " = " + query.GetString(5));// First selected field is index 0
+
 
             SqliteDataReader sqlite_datareader;
             SqliteCommand sqlite_cmd;
@@ -111,9 +171,49 @@ namespace TheSystemNet
                 string myreader = sqlite_datareader.GetString(0);
                 Console.WriteLine(sqlite_datareader.GetString(0) + " = " + sqlite_datareader.GetString(1) + " = " + sqlite_datareader.GetString(2) + " = " + sqlite_datareader.GetString(3) + " = " + sqlite_datareader.GetString(4) + " = " + sqlite_datareader.GetString(5));// First selected field is index 0
 
-               // Console.WriteLine(myreader);
+                // Console.WriteLine(myreader);
             }
 
         }
-    }
-}
+
+        static void BuildMenu(SqliteConnection conn)
+        {
+            int SecLevel = 10;
+            if (SecLevel < 10)
+            {
+                Console.WriteLine("Security Level: " + SecLevel);
+            }
+            else
+            {
+                SecLevel = 10;
+            }
+
+            // Read menu data
+            // @Param $mylevel = Menu level
+            // @Param $myseclevel = Security Level 0=lowest (guest), 10=Highest (admin)
+            int TmpMySecLevel = 0;
+            int MySecLevel = 0;
+            TmpMySecLevel = MySecLevel + 1;
+            int ParentID = 0;
+            int RowCount = 0;
+            SqliteDataReader sqlite_datareader;
+            SqliteCommand sqlite_cmd;
+            sqlite_cmd = conn.CreateCommand();
+            sqlite_cmd.CommandText = "Select * from menu where parentid=" + ParentID + " and seclevel < " + TmpMySecLevel + " order by sortid ASC ";
+            sqlite_datareader = sqlite_cmd.ExecuteReader();
+            while (sqlite_datareader.Read())
+            {
+                //RowCount = sqlite_datareader.HasRows();
+                const int myUrl = 3;
+                const int myName = 4;
+                const int myDesc = 5;
+
+                Console.WriteLine(sqlite_datareader.GetString(myUrl) + " title=" + sqlite_datareader.GetString(myDesc) + " Name : " + sqlite_datareader.GetString(myName));
+                // $tmpparentid = $row["menuid"];
+                //     getmenu($tmpparentid, $myseclevel);
+            }
+
+            // End Read Menu data
+        } // End BuildMenu
+    } // End Program
+} // End NameSpace TheSystemNet
