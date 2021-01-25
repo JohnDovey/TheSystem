@@ -14,3 +14,8 @@ As I go, I will publish "releases" which will correspond to chapters in the stor
 Starting out, my screen display is as a console app and I use simple standard out to print text, with the added sophistication of the ascii borders to start hinting at "boxes". ("Blue Boxes" are a recurring trope in this genre and I will work towards that.) 
 
 As I progress, I will solicit contributors to help to debug, extend and improve the software. When people do, I will select individuals who do contribute and include their names (usernames) in the story, the extent of contribution dependent on the size or importance of the contribution.
+
+## 25 January 2021
+
+Well, it's not going too well with this OR the story. I've been way too busy with other things ...
+
