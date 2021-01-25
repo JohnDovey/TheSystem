@@ -2,7 +2,7 @@
 The System (Gaia Awakening)
 https://www.royalroad.com/fiction/28874/gaia-awakening
 
-27 December 2020
+## 27 December 2020
 
 I am in the process of writing a story, published on royalroad.com. As I develop the story, one of the core plot devices is the existence of a "System" which is used by "Gaia" to communicate with, and interact with, humans.
 As I write the story, I'm bootstrapping "The System" and using the development (programming) as a plot device. I figured it adds a certain authenticity to the story that I am actually writing the code that is discussed in the story, and to make it available for others to down and run.
