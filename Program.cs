@@ -10,7 +10,7 @@ using SQLite;
 // Gaia Awakening :                                         //
 // https://www.royalroad.com/fiction/28874/gaia-awakening   //
 //////////////////////////////////////////////////////////////
-//  Author: John Dovey (c) 2020                             //
+//  Author: John Dovey (c) 2021                             //
 //  Licence: GNU Affero General Public License v3.0         //
 // https://github.com/JohnDovey/TheSystem/blob/main/LICENSE //
 //  Email: dovey.john@gmail.com                             //
@@ -53,7 +53,6 @@ namespace TheSystemNet
             // Get an absolute path to the database file
             var databasePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "TheSystem.db");
             var db = new SQLiteAsyncConnection(databasePath);
-            
             // Setup and open database. This is created as a file in the same folder as the program if it doesn't exist
             await db.CreateTableAsync<Menu>();
 
@@ -130,9 +129,7 @@ namespace TheSystemNet
         }
         static void CreateTable(SqliteConnection conn)
         {
-           
-           
-            
+
 
             // Create menu table if it doesn't already exist
             SqliteCommand sqlite_cmd;
@@ -140,8 +137,8 @@ namespace TheSystemNet
             // string Createsql1 = "CREATE TABLE SampleTable1 (Col1 VARCHAR(20), Col2 INT)";
             sqlite_cmd = conn.CreateCommand();
 
-            sqlite_cmd.CommandText = "Drop Table menu;";
-            sqlite_cmd.ExecuteNonQuery();
+            //'sqlite_cmd.CommandText = "Drop Table menu;";
+            //'sqlite_cmd.ExecuteNonQuery();
 
 
             sqlite_cmd.CommandText = Createsql;
